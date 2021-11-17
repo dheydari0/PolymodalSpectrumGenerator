@@ -6,7 +6,14 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of PolymodalSpectrumGenerator is to …
+The goal of PolymodalSpectrumGenerator is to easily generate key
+groupings of variants of interests in protein sequences. By inputing a
+set of sequences, and indicating the desired number of groupings, the
+package will return the desired number of core variant groups, as well
+as their relation to other variants in a spectrum.
+
+Developped using: - R version 4.1.1 (2021-08-10) – “Kick Things” -
+x86\_64-w64-mingw32/x64 (64-bit) Windows
 
 ## Installation
 
@@ -14,41 +21,48 @@ You can install the development version of PolymodalSpectrumGenerator
 like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+require("devtools")
+devtools::install_github("dheydari0/PolymodalSpectrumGenerator", build_vignettes = TRUE)
+library("PolymodalSpectrumGenerator")
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
+## Overview
 
 ``` r
-library(PolymodalSpectrumGenerator)
-## basic example code
+ls("package:PolymodalSpectrumGenerator")
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+To use this package:
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
+1.  Generate an MSA of protein sequences of interest in .fasta format
+    (Clustal Omega)
+2.  Generate a consensus sequence using (EMBOSS Cons)
+3.  Input your files, input your desired number of groupings, and run
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+<div style="text-align:center">
+<img src="./inst/extdata/+.png" width="600"/>
+<div style="text-align:left">
 
-You can also embed plots, for example:
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+## Contributions
+
+This package made good use of the “msa” package, “An R Package for
+Multiple Sequence Alignment” developed by Enrico Bonatesta, Christoph
+Kainrath, and Ulrich Bodenhofer.
+
+## References
+
+Madeira F, Park YM, Lee J, et al. The EMBL-EBI search and sequence
+analysis tools APIs in 2019. Nucleic Acids Research. 2019
+Jul;47(W1):W636-W641. DOI: 10.1093/nar/gkz268. PMID: 30976793; PMCID:
+PMC6602479.
+
+U. Bodenhofer, E. Bonatesta, C. Horejs-Kainrath, and S. Hochreiter
+(2015). msa: an ˇ R package for multiple sequence alignment.
+Bioinformatics 31(24):3997–3999. DOI: bioinformatics/btv494.
+
+## Acknowledgements
+
+This package was developed as part of an assessment for 2021 BCB410H:
+Applied Bioinfor-matics, University of Toronto, Toronto, CANADA.
