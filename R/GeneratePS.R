@@ -46,7 +46,7 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
 
   consensAAs <- strsplit(consens, "")[[1]] # Split characters
 
-  seqScores <- list()
+  conSeqScores <- list()
 
   i <- 1
 
@@ -66,14 +66,14 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
 
     }
 
-    seqScores[i] = z #Set score
+    conSeqScores[i] = z #Set score
     i <- i + 1
 
   }
 
-  maxnum <- which.max(seqScores)
+  maxnum <- which.max(conSeqScores)
 
-  minnum <- which.min(seqScores)
+  minnum <- which.min(conSeqScores)
 
   maxMatch <- names(mySequenceFile)[maxnum] #Get nametag of best match
 
