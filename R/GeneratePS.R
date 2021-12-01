@@ -13,9 +13,9 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
-if (!requireNamespace("BiocManager", quietly=TRUE))
- install.packages("BiocManager")
-BiocManager::install("msa")
+#if (!requireNamespace("BiocManager", quietly=TRUE))
+# install.packages("BiocManager")
+#BiocManager::install("msa")
 
 MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/aln-fasta.fasta"
 Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/CONSENSUS.txt"
@@ -110,8 +110,10 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
           n <- n + 1
         }
 
-        pos <- (maxMatches - minMatches )/minMatches
-        matchings <- data.frame(i, maxMatches, minMatches, pos)
+        strength <- minMatches + maxMatches
+        pos <- minMatches/strength
+
+        matchings <- data.frame(i, maxMatches, minMatches, pos, strength)
       }
 
       i <- i + 1
@@ -135,4 +137,6 @@ while (i <= (N-2)) {
 }
 
 cat("The right bound is the sequence: ", toString(right))
+
+matchings
 
