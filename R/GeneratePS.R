@@ -19,7 +19,9 @@
 
 MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/aln-fasta.fasta"
 Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/CONSENSUS.txt"
-N = 3
+N = 4
+
+findKeySeqs(MSAfilepath, Consensusfilepath, 4)
 
 findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
 
@@ -79,11 +81,15 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
 
   minMatch <- names(mySequenceFile)[minnum] #Get nametag of worst match
 
-  index <- c('Index')
+  index <- c()
 
-  maxMatch <- c(0)
+  maxMatch <- c()
 
-  minMatch <- c(0)
+  minMatch <- c()
+
+  pos <- c()
+
+  strength <- c()
 
     i = 1
     while (i <= length(mySequenceFile)) {
@@ -110,14 +116,22 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
           n <- n + 1
         }
 
-        strength <- minMatches + maxMatches
-        pos <- round(minMatches/strength, digits=2)
+        strengthVal <- minMatches + maxMatches
+        posVal <- round(minMatches/strengthVal, digits=2)
 
-        matchings <- data.frame(i, maxMatches, minMatches, pos, strength)
+
+
+        index <- c(index, i)
+        maxMatch <- c(maxMatch, maxMatches)
+        minMatch <- c(minMatch, minMatches)
+        pos <- c(pos, posVal)
+        strength <- c(strength, strengthVal)
       }
 
       i <- i + 1
     }
+
+    matchings <- data.frame(index, maxMatch, minMatch, pos, strength)
 }
 
 #Then run:
@@ -143,27 +157,35 @@ matchings
 
 # Getting Indices to be Graphed by top Strength
 
-for (i in 2:(N-1)) { # Loop until N-2 items have been added to Spectrum
+maxStrengthIndices <- c() # List of the strongest indices
+maxStrengthStrengths <- c() # List of the strongest strengths
 
-  tempIndex <- 0 # placeholder
-  maxStrengthValue <- 0 # max Strength iterator holder
-  maxStrengthIndices <- c(-100) # List of the strongest indices
+for (i in 1:(N-2)) {
+  maxStrengthIndices <- c(maxStrengthIndices, 0)
+}
+
+for (i in 1:(N-2)) {
+  maxStrengthStrengths <- c(maxStrengthStrengths, 0)
+}
+
+
+
+
+for (i in 1:(N-2)) { # Loop until N-2 items have been added to maxStrengthIndices
 
   for(j in 1:nrow(matchings)) {  #Loop over rows
 
-    if (matchings[j,]$strength > maxStrengthValue) {
+    minStrength <- min(maxStrengthStrengths)
+    minStrengthIndex <- which.min(maxStrengthIndices)
 
-      if (matchings[j,]$i %in% maxStrengthIndices == FALSE) {
+    if (matchings[j,]$strength > minStrength) {
 
-        tempIndex <- matchings[j,]$i
-
-      }
+      maxStrengthStrengths[minStrengthIndex] = matchings[j,]$strength
+      maxStrengthIndices[minStrengthIndex] = matchings[j,]$i
 
     }
 
   }
-
-  maxStrengthIndices <- c(maxStrengthIndices, tempIndex)
 
 }
 
@@ -174,7 +196,7 @@ for (i in 2:(N-1)) { # Loop until N-2 items have been added to Spectrum
 graphScores <- c(0)
 graphNames <- c(substr(left, 4, 9)) #Left protein name (aka best match)
 
-for(j in 2:nrow(matchings)) {
+for(j in 1:nrow(matchings)) {
 
   if (matchings[j,]$i %in% maxStrengthIndices) {
 
@@ -192,9 +214,10 @@ for(j in 2:nrow(matchings)) {
 graphScores <- c(graphScores, 1)
 graphNames <- c(graphNames, substr(right, 4, 9))
 
-plot(0, xlim = c(0, 3.5), axes=FALSE, type = "n", xlab = "", ylab = "") # Linedraw
-axis(1, at = graphScores , labels = graphScores) # Linedraw
+library(grid)
+grid.newpage()
+grid.xaxis(at=graphScores,
+           vp=vpStack(viewport(height=unit(2,"lines")),
+                      viewport(y=1, xscale = c(-0.5, 1.5), just="bottom")))
 
-
-
-
+#ADD DOTS
