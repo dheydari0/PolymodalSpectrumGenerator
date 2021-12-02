@@ -111,7 +111,7 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
         }
 
         strength <- minMatches + maxMatches
-        pos <- minMatches/strength
+        pos <- round(minMatches/strength, digits=2)
 
         matchings <- data.frame(i, maxMatches, minMatches, pos, strength)
       }
@@ -139,4 +139,62 @@ while (i <= (N-2)) {
 cat("The right bound is the sequence: ", toString(right))
 
 matchings
+
+
+# Getting Indices to be Graphed by top Strength
+
+for (i in 2:(N-1)) { # Loop until N-2 items have been added to Spectrum
+
+  tempIndex <- 0 # placeholder
+  maxStrengthValue <- 0 # max Strength iterator holder
+  maxStrengthIndices <- c(-100) # List of the strongest indices
+
+  for(j in 1:nrow(matchings)) {  #Loop over rows
+
+    if (matchings[j,]$strength > maxStrengthValue) {
+
+      if (matchings[j,]$i %in% maxStrengthIndices == FALSE) {
+
+        tempIndex <- matchings[j,]$i
+
+      }
+
+    }
+
+  }
+
+  maxStrengthIndices <- c(maxStrengthIndices, tempIndex)
+
+}
+
+# maxStrengthIndices : vector of N-2 highest strengths
+
+# Now, Get pos scores and names of these strongest ones
+
+graphScores <- c(0)
+graphNames <- c(substr(left, 4, 9)) #Left protein name (aka best match)
+
+for(j in 2:nrow(matchings)) {
+
+  if (matchings[j,]$i %in% maxStrengthIndices) {
+
+    graphScores <- c(graphScores, matchings[j,]$pos)
+
+    varName <- names(mySequenceFile[i])
+
+    graphNames <- c(graphNames, substr(varName, 4, 9))
+
+  }
+
+}
+
+#Right protein data (aka worst match)
+graphScores <- c(graphScores, 1)
+graphNames <- c(graphNames, substr(right, 4, 9))
+
+plot(0, xlim = c(0, 3.5), axes=FALSE, type = "n", xlab = "", ylab = "") # Linedraw
+axis(1, at = graphScores , labels = graphScores) # Linedraw
+
+
+
 
