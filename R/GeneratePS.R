@@ -19,9 +19,9 @@
 
 MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/aln-fasta.fasta"
 Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/CONSENSUS.txt"
-N = 4
+N = 5
 
-findKeySeqs(MSAfilepath, Consensusfilepath, 4)
+findKeySeqs(MSAfilepath, Consensusfilepath, 5)
 
 findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
 
@@ -40,7 +40,7 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
 
     print(mySequenceFile[i])
 
-    seqList[i] <- (toString(mySequenceFile[i]))
+    seqList[[i]] <- (toString(mySequenceFile[i]))
 
     i <- i + 1
   }
@@ -50,27 +50,24 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
 
   conSeqScores <- list()
 
-  i <- 1
-
-  while (i <= length(seqList)) { #Iterate through our given seqs
+  i = 1
+  for (i in 1:length(seqList)) { #Iterate through our given seqs
     splitseqs <- strsplit(seqList[[i]], "")[[1]]   #Split the string into AAs
 
-    n = 1
-    z <- 0
+    matches <- 0
 
-    for (AA in consensAAs) { #Iterate through each consesus seq AA
+    for (j in 1:min(length(splitseqs),length(consensAAs))) { #Iterate through each consesus seq AA
 
-      if (splitseqs[n] == AA) { #Add to score for match
-        z <- z + 1
+      if (splitseqs[j] == consensAAs[j]) { #Add to score for match
+        matches <- matches + 1
       }
 
-      n <- n + 1
+      AAnum <- AAnum + 1
 
     }
 
-    conSeqScores[i] = z #Set score
-    i <- i + 1
-
+    print(matches)
+    conSeqScores[i] = matches #Set score
   }
 
   maxnum <- which.max(conSeqScores)
@@ -103,18 +100,19 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
         minAAs <- strsplit(seqList[[minnum]], '')[[1]] #split AAs of Min
 
 
-        n = 1
-        for (AA in splitseqs) {
+        for (j in 1:min(length(splitseqs),length(maxAAs), length(minAAs))) {
 
-          if (AA == maxAAs[n]) {
+
+          if (splitseqs[j] == maxAAs[j]) {
             maxMatches <- maxMatches + 1
           }
 
-          if (AA == minAAs[n]) {
+          if (splitseqs[j] == minAAs[j]) {
             minMatches <- minMatches + 1
           }
-          n <- n + 1
+
         }
+
 
         strengthVal <- minMatches + maxMatches
         posVal <- round(minMatches/strengthVal, digits=2)
@@ -132,7 +130,8 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
     }
 
     matchings <- data.frame(index, maxMatch, minMatch, pos, strength)
-}
+
+
 
 #Then run:
 
@@ -202,13 +201,14 @@ for(j in 1:nrow(matchings)) {
 
     graphScores <- c(graphScores, matchings[j,]$pos)
 
-    varName <- names(mySequenceFile[i])
+    varName <- names(mySequenceFile[matchings[j,]$i])
 
     graphNames <- c(graphNames, substr(varName, 4, 9))
 
   }
-
 }
+
+
 
 #Right protein data (aka worst match)
 graphScores <- c(graphScores, 1)
@@ -218,6 +218,12 @@ library(grid)
 grid.newpage()
 grid.xaxis(at=graphScores,
            vp=vpStack(viewport(height=unit(2,"lines")),
-                      viewport(y=1, xscale = c(-0.5, 1.5), just="bottom")))
+                      viewport(y=1, xscale = c(-0.5, 1.5), just="top")))
+
+}
+
+#plot(graphScores)
+#text(graphScores, labels=graphNames, cex= 5, pos='bottom')
+
 
 #ADD DOTS
