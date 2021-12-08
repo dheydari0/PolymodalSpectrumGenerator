@@ -19,16 +19,50 @@
 
 #install.packages("shiny")
 
-
-MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/aln-fasta.fasta"
-Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/CONSENSUS.txt"
-N = 5
-
-generatePS(MSAfilepath, Consensusfilepath, N)
+#' Generates the Polymodal Spectrum
+#'
+#' With a filepath to the multiple sequence alignment, and consensus sequence
+#' for a set of proteins, and a specified n, which is the number of desired
+#' variants to be shown, the program returns of plot of the n most significant
+#' varaints in the set.
+#'
+#' The variant which matches the consensus sequence the best is position at the
+#' origin (0), and the variant which is the worst match with the consensus is at 1.
+#' The other n - 2 variants are positioned based off of the relative number of
+#' matches they have with the best and worst matches. The variants are also assigned
+#' a strength, which is their number of matches with the best and worst, which is
+#' used to give priority to the varaints with the most matches.
+#'
+#'
+#' @param MSAfilepath A string representation of the filepath for the .fasta
+#'                    file containing the aligned protein sequences
+#' @param Consensusfilepath A string representation of the filepath for the
+#'                          .txt file containing the protein consensus sequence
+#' @param N The number of key variants you want to be visualized
+#'
+#' @return Output is a spectrum plot of the variants, position based on their
+#'         relatedness, 0 being the variant most similar to the consensus, and 1
+#'         being the variant with the fewest consensus matches
+#'
+#' @examples
+#' \dontrun{
+#' # For a set of aligned hemoglobin subunit proteins, map the relative positioning of the
+#' 5 variants
+#'
+#' file inputFileFunc2, first column are the gene Lines, MEX, TEX and WES columns are 3 differnet root treatments
+#' MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/aln-fasta.fasta"
+#' Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/CONSENSUS.txt"
+#' N = 5
+#'
+#' generatePS(MSAfilepath, Consensusfilepath, N)
+#'
+#' @export
+#' @import grid
+#' @import msa
+#' @import Biostrings
 
 generatePS <- function(MSAfilepath, Consensusfilepath, N) {
 
-  library(msa) #To Test install
 
   mySequenceFile <- readAAStringSet(MSAfilepath) #Load MSA file in .fasta format
   myClustalAlignment <- msa(mySequenceFile, "ClustalOmega") # Read MSA, ClustalOmega version
@@ -133,82 +167,78 @@ generatePS <- function(MSAfilepath, Consensusfilepath, N) {
 
     matchings <- data.frame(index, maxMatch, minMatch, pos, strength)
 
+  #Then run:
+
+  left <- names(mySequenceFile[maxnum])
+  right <- names(mySequenceFile[minnum])
+
+  cat("The left bound is the sequence: " , toString(left))
+
+  i = 1
+  while (i <= (N-2)) {
+    data <- matchings[i,]
+
+    cat("The third sequence lies at", matchings[i,]$pos, "(+ towards left)")
+
+    i <- i + 1
+  }
+
+  cat("The right bound is the sequence: ", toString(right))
+
+  matchings
 
 
-#Then run:
+  # Getting Indices to be Graphed by top Strength
 
-left <- names(mySequenceFile[maxnum])
-right <- names(mySequenceFile[minnum])
+  maxStrengthIndices <- c() # List of the strongest indices
+  maxStrengthStrengths <- c() # List of the strongest strengths
 
-cat("The left bound is the sequence: " , toString(left))
+  for (i in 1:(N-2)) {
+    maxStrengthIndices <- c(maxStrengthIndices, 0)
+  }
 
-i = 1
-while (i <= (N-2)) {
-  data <- matchings[i,]
-
-  cat("The third sequence lies at", matchings[i,]$pos, "(+ towards left)")
-
-  i <- i + 1
-}
-
-cat("The right bound is the sequence: ", toString(right))
-
-matchings
+  for (i in 1:(N-2)) {
+    maxStrengthStrengths <- c(maxStrengthStrengths, 0)
+  }
 
 
-# Getting Indices to be Graphed by top Strength
+  for (i in 1:(N-2)) { # Loop until N-2 items have been added to maxStrengthIndices
 
-maxStrengthIndices <- c() # List of the strongest indices
-maxStrengthStrengths <- c() # List of the strongest strengths
+    for(j in 1:nrow(matchings)) {  #Loop over rows
 
-for (i in 1:(N-2)) {
-  maxStrengthIndices <- c(maxStrengthIndices, 0)
-}
+      minStrength <- min(maxStrengthStrengths)
+      minStrengthIndex <- which.min(maxStrengthIndices)
 
-for (i in 1:(N-2)) {
-  maxStrengthStrengths <- c(maxStrengthStrengths, 0)
-}
+      if (matchings[j,]$strength > minStrength) {
 
+        maxStrengthStrengths[minStrengthIndex] = matchings[j,]$strength
+        maxStrengthIndices[minStrengthIndex] = matchings[j,]$i
 
-
-
-for (i in 1:(N-2)) { # Loop until N-2 items have been added to maxStrengthIndices
-
-  for(j in 1:nrow(matchings)) {  #Loop over rows
-
-    minStrength <- min(maxStrengthStrengths)
-    minStrengthIndex <- which.min(maxStrengthIndices)
-
-    if (matchings[j,]$strength > minStrength) {
-
-      maxStrengthStrengths[minStrengthIndex] = matchings[j,]$strength
-      maxStrengthIndices[minStrengthIndex] = matchings[j,]$i
+      }
 
     }
 
   }
 
-}
+  # maxStrengthIndices : vector of N-2 highest strengths
 
-# maxStrengthIndices : vector of N-2 highest strengths
+  # Now, Get pos scores and names of these strongest ones
 
-# Now, Get pos scores and names of these strongest ones
+  graphScores <- c(0)
+  graphNames <- c(substr(left, 4, 9)) #Left protein name (aka best match)
 
-graphScores <- c(0)
-graphNames <- c(substr(left, 4, 9)) #Left protein name (aka best match)
+  for(j in 1:nrow(matchings)) {
 
-for(j in 1:nrow(matchings)) {
+    if (matchings[j,]$i %in% maxStrengthIndices) {
 
-  if (matchings[j,]$i %in% maxStrengthIndices) {
+      graphScores <- c(graphScores, matchings[j,]$pos)
 
-    graphScores <- c(graphScores, matchings[j,]$pos)
+      varName <- names(mySequenceFile[matchings[j,]$i])
 
-    varName <- names(mySequenceFile[matchings[j,]$i])
+      graphNames <- c(graphNames, substr(varName, 4, 9))
 
-    graphNames <- c(graphNames, substr(varName, 4, 9))
-
+    }
   }
-}
 
 
 
@@ -227,7 +257,6 @@ for(j in 1:nrow(matchings)) {
 
 
 
-  library(grid)
   grid.newpage()
 
   grid.xaxis(at=graphScores, label=graphLabel,
@@ -238,9 +267,9 @@ for(j in 1:nrow(matchings)) {
 
 }
 
-#plot(graphScores)
-#text(graphScores, labels=graphNames, cex= 5, pos='bottom')
+MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/aln-fasta.fasta"
+Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/CONSENSUS.txt"
+N = 5
 
-
-#ADD DOTS
+generatePS(MSAfilepath, Consensusfilepath, N)
 
