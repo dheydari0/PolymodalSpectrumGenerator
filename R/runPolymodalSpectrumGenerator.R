@@ -9,11 +9,12 @@
 #' @examples
 #' \dontrun{
 #'
-#' FastRPA::runFastRPA()
-#' }
+#' PolymodalSpectrumGenerator::runPSG()
+#'
 #'
 #' @references
-#' Grolemund, G. (2015). Learn Shiny - Video Tutorials. \href{https://shiny.rstudio.com/tutorial/}{Link}
+#' Winston Chang, Joe Cheng, JJ Allaire, Carson Sievert, Barret Schloerke, Yihui Xie, Jeff Allen, Jonathan McPherson, Alan Dipert and Barbara Borges (2021). shiny: Web Application
+#'     Framework for R. R package version 1.7.1. https://CRAN.R-project.org/package=shiny
 #'
 #' @export
 #' @importFrom shiny runApp

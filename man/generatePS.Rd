@@ -34,3 +34,11 @@ matches they have with the best and worst matches. The variants are also assigne
 a strength, which is their number of matches with the best and worst, which is
 used to give priority to the varaints with the most matches.
 }
+\references{
+Bodenhofer U, Bonatesta E, Horejs-Kainrath C, Hochreiter S (2015). “msa: an R package for multiple sequence alignment.” Bioinformatics, 31(24), 3997–3999. doi: 10.1093/bioinformatics/btv494.
+Murrell, P. (2005). R Graphics. Chapman & Hall/CRC Press.
+Pagès H, Aboyoun P, Gentleman R, DebRoy S (2021). Biostrings: Efficient manipulation of biological strings. R package version 2.62.0, https://bioconductor.org/packages/Biostrings.
+R Core Team (2021). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+Winston Chang, Joe Cheng, JJ Allaire, Carson Sievert, Barret Schloerke, Yihui Xie, Jeff Allen, Jonathan McPherson, Alan Dipert and Barbara Borges (2021). shiny: Web Application
+Framework for R. R package version 1.7.1. https://CRAN.R-project.org/package=shiny
+}

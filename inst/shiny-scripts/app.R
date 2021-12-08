@@ -1,3 +1,17 @@
+#' Generate the ui for the PolymodalSpectrumGenerator Shiny app.
+#'
+#' The UI contains the file input buttons and text input buttons to
+#' get the input parameters required to run generatePS().
+#'
+#'
+#' @return Output is an event, which should be input$submit1
+#'
+#' @references
+#' Winston Chang, Joe Cheng, JJ Allaire, Carson Sievert, Barret Schloerke, Yihui Xie, Jeff Allen, Jonathan McPherson, Alan Dipert and Barbara Borges (2021). shiny: Web Application
+#'     Framework for R. R package version 1.7.1. https://CRAN.R-project.org/package=shiny
+#'
+#'
+
 ui <- fluidPage(
 
   # Webapp Title

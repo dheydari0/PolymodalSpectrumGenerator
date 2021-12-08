@@ -13,13 +13,7 @@ No value, opens a Shiny page
 This function launches the Shiny app for the Polymodal Spectrum Generator
 program
 }
-\examples{
-\dontrun{
-
-FastRPA::runFastRPA()
-}
-
-}
 \references{
-Grolemund, G. (2015). Learn Shiny - Video Tutorials. \href{https://shiny.rstudio.com/tutorial/}{Link}
+Winston Chang, Joe Cheng, JJ Allaire, Carson Sievert, Barret Schloerke, Yihui Xie, Jeff Allen, Jonathan McPherson, Alan Dipert and Barbara Borges (2021). shiny: Web Application
+Framework for R. R package version 1.7.1. https://CRAN.R-project.org/package=shiny
 }

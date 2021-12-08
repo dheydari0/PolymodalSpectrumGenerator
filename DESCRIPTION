@@ -1,15 +1,23 @@
 Package: PolymodalSpectrumGenerator
 Type: Package
-Title: Generates a graphic spectrum positioning various genetic samples for loci of interest
+Title: Generates a spectrum visualizing the relative position of a desired 
+    number of variants for a protein sequence
 Version: 0.1.0
 Author: Daniel Heydari
 Maintainer: <d.heydari@mail.utoronto.ca>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Returns of plot of the n most significant varaints in the set.
+    This program places the variants which match the consensus sequence best 
+    and worst a 0 and 1 respectively.The variants are also assigned
+    a strength, which is their number of matches with the best and worst, which is
+    used to give priority to the varaints with the most matches.
 License: MIT + file LICENSE
 Depends: R (>= 3.1.0), Biostrings, msa, shiny
-devtools::document()
+devtools: :document()
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
+Suggests: 
+    rmarkdown,
+    knitr
+VignetteBuilder: knitr

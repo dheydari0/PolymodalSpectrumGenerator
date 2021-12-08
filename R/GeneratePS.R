@@ -13,12 +13,6 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
-#if (!requireNamespace("BiocManager", quietly=TRUE))
-# install.packages("BiocManager")
-#BiocManager::install("msa")
-
-#install.packages("shiny")
-
 #' Generates the Polymodal Spectrum
 #'
 #' With a filepath to the multiple sequence alignment, and consensus sequence
@@ -49,12 +43,19 @@
 #' # For a set of aligned hemoglobin subunit proteins, map the relative positioning of the
 #' 5 variants
 #'
-#' file inputFileFunc2, first column are the gene Lines, MEX, TEX and WES columns are 3 differnet root treatments
 #' MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/aln-fasta.fasta"
 #' Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/CONSENSUS.txt"
 #' N = 5
 #'
 #' generatePS(MSAfilepath, Consensusfilepath, N)
+#'
+#' @references
+#' Bodenhofer U, Bonatesta E, Horejs-Kainrath C, Hochreiter S (2015). “msa: an R package for multiple sequence alignment.” Bioinformatics, 31(24), 3997–3999. doi: 10.1093/bioinformatics/btv494.
+#' Murrell, P. (2005). R Graphics. Chapman & Hall/CRC Press.
+#' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2021). Biostrings: Efficient manipulation of biological strings. R package version 2.62.0, https://bioconductor.org/packages/Biostrings.
+#' R Core Team (2021). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+#' Winston Chang, Joe Cheng, JJ Allaire, Carson Sievert, Barret Schloerke, Yihui Xie, Jeff Allen, Jonathan McPherson, Alan Dipert and Barbara Borges (2021). shiny: Web Application
+#'     Framework for R. R package version 1.7.1. https://CRAN.R-project.org/package=shiny
 #'
 #' @export
 #' @import grid
