@@ -47,6 +47,7 @@ To use this package:
 3. Input your files, input your desired number of groupings, and run
 
 <div style="text-align:center"><img src="./inst/extdata/+.png" width="600"/>
+<img src="./vignettes/PSGex1.png" width="750" height="300"/>
 <div style="text-align:left">
 
 

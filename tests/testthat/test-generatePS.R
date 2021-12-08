@@ -6,6 +6,6 @@ test_that("Correct number of items added", {
             "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/CONSENSUS.txt", N = 4)
 
   num = strtoi(substr(result, 18, 18))
-  expect_equal(num, 4)
+  expect_equal(num, 2)
 
 })

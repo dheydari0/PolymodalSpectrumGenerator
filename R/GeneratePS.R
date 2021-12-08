@@ -57,6 +57,9 @@
 
 generatePS <- function(MSAfilepath, Consensusfilepath, N) {
 
+  library(grid)
+  library(msa)
+  library(Biostrings)
 
   mySequenceFile <- readAAStringSet(MSAfilepath) #Load MSA file in .fasta format
   myClustalAlignment <- msa(mySequenceFile, "ClustalOmega") # Read MSA, ClustalOmega version
@@ -199,7 +202,7 @@ generatePS <- function(MSAfilepath, Consensusfilepath, N) {
   # Now, Get pos scores and names of these strongest ones
 
   graphScores <- c(0)
-  graphNames <- c(substr(left, 4, 9)) #Left protein name (aka best match)
+  graphNames <- c(substr(names(mySequenceFile[maxnum]), 4, 9)) #Left protein name (aka best match)
 
   for(j in 1:nrow(matchings)) {
 
@@ -218,7 +221,7 @@ generatePS <- function(MSAfilepath, Consensusfilepath, N) {
 
   #Right protein data (aka worst match)
   graphScores <- c(graphScores, 1)
-  graphNames <- c(graphNames, substr(right, 4, 9))
+  graphNames <- c(graphNames, substr(names(mySequenceFile[minnum]), 4, 9))
   graphLabel <- c()
 
   i <- 1
@@ -233,17 +236,20 @@ generatePS <- function(MSAfilepath, Consensusfilepath, N) {
 
   grid.newpage()
 
-  grid.xaxis(at=graphScores, label=graphLabel,
+  grid.text(label = "PolymodalSpectrum", gp=gpar(fontsize=12, col='black'))
+
+  grid.xaxis(at=graphScores, label=graphLabel,  gp=gpar(fontsize=8, col='black'),
              vp=vpStack(viewport(height=unit(2,"lines")),
                         viewport(y=1, xscale = c(-0.1, 1.05), just="top")))
 
-  #gg <- ggplot(data, aes(x=graphNames, y=graphScores)) + geom_boxplot()
-
 }
+
+#Example use! Files are included in inst so you can uncomment and run
 
 #MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/aln-fasta.fasta"
 #Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/CONSENSUS.txt"
 #N = 5
 
 #generatePS(MSAfilepath, Consensusfilepath, N)
+
 

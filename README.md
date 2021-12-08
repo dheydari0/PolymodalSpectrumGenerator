@@ -3,9 +3,6 @@
 
 # PolymodalSpectrumGenerator
 
-<!-- badges: start -->
-<!-- badges: end -->
-
 The goal of PolymodalSpectrumGenerator is to easily generate key
 groupings of variants of interests in protein sequences. By inputing a
 set of sequences, a consensus sequence, and indicating the desired
