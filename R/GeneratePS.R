@@ -1,11 +1,4 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
+
 #
 # Some useful keyboard shortcuts for package authoring:
 #
@@ -168,26 +161,6 @@ generatePS <- function(MSAfilepath, Consensusfilepath, N) {
 
     matchings <- data.frame(index, maxMatch, minMatch, pos, strength)
 
-  #Then run:
-
-  left <- names(mySequenceFile[maxnum])
-  right <- names(mySequenceFile[minnum])
-
-  cat("The left bound is the sequence: " , toString(left))
-
-  i = 1
-  while (i <= (N-2)) {
-    data <- matchings[i,]
-
-    cat("The third sequence lies at", matchings[i,]$pos, "(+ towards left)")
-
-    i <- i + 1
-  }
-
-  cat("The right bound is the sequence: ", toString(right))
-
-  matchings
-
 
   # Getting Indices to be Graphed by top Strength
 
@@ -268,9 +241,9 @@ generatePS <- function(MSAfilepath, Consensusfilepath, N) {
 
 }
 
-MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/aln-fasta.fasta"
-Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/CONSENSUS.txt"
-N = 5
+#MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/aln-fasta.fasta"
+#Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/inst/extdata/CONSENSUS.txt"
+#N = 5
 
-generatePS(MSAfilepath, Consensusfilepath, N)
+#generatePS(MSAfilepath, Consensusfilepath, N)
 

@@ -42,6 +42,7 @@ To use this package:
 
 <div style="text-align:center">
 <img src="./inst/extdata/+.png" width="600"/>
+<img src="./vignettes/PSGex1.png" width="750" height="300"/>
 <div style="text-align:left">
 
 
@@ -51,6 +52,13 @@ To use this package:
 This package made good use of the “msa” package, “An R Package for
 Multiple Sequence Alignment” developed by Enrico Bonatesta, Christoph
 Kainrath, and Ulrich Bodenhofer.
+
+This package also used the “grid” package to generate the resulting
+plot, and “shiny” for the webapp.
+
+My primary contribution is the development of the algorithm which sorts
+the variants, and generates the positional and strength data which is
+used to plot them.
 
 ## References
 
