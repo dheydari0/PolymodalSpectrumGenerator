@@ -17,19 +17,23 @@
 # install.packages("BiocManager")
 #BiocManager::install("msa")
 
+#install.packages("shiny")
+
+
 MSAfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/aln-fasta.fasta"
 Consensusfilepath = "~/BCB410/PolymodalSpectrumGenerator/R/CONSENSUS.txt"
 N = 5
 
-findKeySeqs(MSAfilepath, Consensusfilepath, 5)
+generatePS(MSAfilepath, Consensusfilepath, N)
 
-findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
+generatePS <- function(MSAfilepath, Consensusfilepath, N) {
 
   library(msa) #To Test install
 
   mySequenceFile <- readAAStringSet(MSAfilepath) #Load MSA file in .fasta format
   myClustalAlignment <- msa(mySequenceFile, "ClustalOmega") # Read MSA, ClustalOmega version
-  print(myClustalAlignment, showNames=TRUE, show="complete")  # Show just the alignment
+
+  #print(myClustalAlignment, showNames=TRUE, show="complete")  # Show just the alignment
 
   consens <- toString(readAAStringSet(Consensusfilepath))
 
@@ -38,7 +42,7 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
   i = 1
   while (i <= length(mySequenceFile)) {
 
-    print(mySequenceFile[i])
+    #print(mySequenceFile[i])
 
     seqList[[i]] <- (toString(mySequenceFile[i]))
 
@@ -62,11 +66,9 @@ findKeySeqs <- function(MSAfilepath, Consensusfilepath, N) {
         matches <- matches + 1
       }
 
-      AAnum <- AAnum + 1
-
     }
 
-    print(matches)
+    #print(matches)
     conSeqScores[i] = matches #Set score
   }
 
@@ -210,15 +212,29 @@ for(j in 1:nrow(matchings)) {
 
 
 
-#Right protein data (aka worst match)
-graphScores <- c(graphScores, 1)
-graphNames <- c(graphNames, substr(right, 4, 9))
+  #Right protein data (aka worst match)
+  graphScores <- c(graphScores, 1)
+  graphNames <- c(graphNames, substr(right, 4, 9))
+  graphLabel <- c()
 
-library(grid)
-grid.newpage()
-grid.xaxis(at=graphScores,
-           vp=vpStack(viewport(height=unit(2,"lines")),
-                      viewport(y=1, xscale = c(-0.5, 1.5), just="top")))
+  i <- 1
+  for (item in graphScores) {
+
+    label <- paste(toString(item), "\n", graphNames[i])
+    i <- i + 1
+    graphLabel <- c(graphLabel, label)
+  }
+
+
+
+  library(grid)
+  grid.newpage()
+
+  grid.xaxis(at=graphScores, label=graphLabel,
+             vp=vpStack(viewport(height=unit(2,"lines")),
+                        viewport(y=1, xscale = c(-0.1, 1.05), just="top")))
+
+  #gg <- ggplot(data, aes(x=graphNames, y=graphScores)) + geom_boxplot()
 
 }
 
@@ -227,3 +243,4 @@ grid.xaxis(at=graphScores,
 
 
 #ADD DOTS
+
